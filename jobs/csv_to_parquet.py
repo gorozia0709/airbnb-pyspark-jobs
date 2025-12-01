@@ -2,18 +2,14 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, when, lower, regexp_replace
 from pyspark.sql.types import *
 
-# ---------------------------
-# Spark session
-# ---------------------------
+
 spark = SparkSession.builder \
     .appName("Airbnb CSV to Parquet") \
     .getOrCreate()
 
 spark.conf.set("spark.sql.parquet.datetimeRebaseModeInWrite", "CORRECTED")
 
-# ---------------------------
-# Input / Output paths
-# ---------------------------
+
 listings_csv_path = "gs://airbnb-data-bc/csv/listings/"
 reviews_csv_path = "gs://airbnb-data-bc/csv/reviews/"
 calendar_csv_path = "gs://airbnb-data-bc/csv/calendar/"
@@ -22,9 +18,7 @@ listings_parquet_path = "gs://airbnb-data-bc/parquet/listings/"
 reviews_parquet_path = "gs://airbnb-data-bc/parquet/reviews/"
 calendar_parquet_path = "gs://airbnb-data-bc/parquet/calendar/"
 
-# ============================================================
-# 1. LISTINGS
-# ============================================================
+
 listings_df = spark.read \
     .option("header", True) \
     .option("multiLine", True) \
@@ -84,9 +78,7 @@ listings_df_parquet = listings_df \
 
 listings_df_parquet.write.mode("overwrite").parquet(listings_parquet_path)
 
-# ============================================================
-# 2. CALENDAR
-# ============================================================
+
 calendar_df = spark.read \
     .option("header", True) \
     .option("multiLine", True) \
@@ -105,9 +97,7 @@ calendar_df_parquet = calendar_df \
 
 calendar_df_parquet.write.mode("overwrite").parquet(calendar_parquet_path)
 
-# ============================================================
-# 3. REVIEWS
-# ============================================================
+
 reviews_df = spark.read \
     .option("header", True) \
     .option("multiLine", True) \
@@ -123,7 +113,5 @@ reviews_df_parquet = reviews_df \
 
 reviews_df_parquet.write.mode("overwrite").parquet(reviews_parquet_path)
 
-# ============================================================
-# Done
-# ============================================================
+
 spark.stop()
