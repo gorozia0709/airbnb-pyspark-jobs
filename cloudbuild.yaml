@@ -1,0 +1,12 @@
+steps:
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      [
+        "-m",
+        "rsync",
+        "-r",
+        "-d",  
+        "jobs",
+        "gs://airbnb-code-bc/pyspark-jobs/"
+      ]
+timeout: "600s"
