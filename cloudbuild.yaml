@@ -10,3 +10,6 @@ steps:
         "gs://airbnb-code-bc/pyspark-jobs/"
       ]
 timeout: "600s"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
